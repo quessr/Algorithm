@@ -21,7 +21,7 @@ fun main() {
 
 //산술평균
 fun arithmeticMean(nList: List<Int>): Int {
-    return (nList.sum().toDouble() / nList.size).roundToInt()
+    return (nList.average()).roundToInt()
 }
 
 //중앙값
@@ -34,12 +34,9 @@ fun median(nList: List<Int>): Int {
 //최빈값
 fun mode(nList: List<Int>): Int {
     val frequencyMap = nList.groupingBy { it }.eachCount()
+    val maxFrequency = frequencyMap.values.max()
 
-    val groupingByFrequency = frequencyMap
-        .entries
-        .groupBy({ it.value }, { it.key })
-
-    val maxFrequencyKeys = groupingByFrequency.maxBy { it.key }.value
+    val maxFrequencyKeys = frequencyMap.filter { it.value == maxFrequency }.keys
 
     return if (maxFrequencyKeys.size > 1) maxFrequencyKeys.sorted()[1] else maxFrequencyKeys.first()
 }
