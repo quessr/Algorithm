@@ -4,16 +4,23 @@ fun main() {
 
     val (n, m) = br.readLine().split(" ").map { it.toInt() }
 
-    val nmNames = mutableListOf<String>()
+    val unheard = HashSet<String>() // 듣도 못한 사람 명단
+    val unheardUnseen = mutableListOf<String>() // 듣보잡 명단
 
-    repeat(n + m) {
-        nmNames.add(br.readLine())
+    repeat(n) {
+        unheard.add(br.readLine())
     }
 
-    val groupedNames = nmNames.groupingBy { it }.eachCount().filter { it.value > 1 }.keys.sorted()
+    repeat(m) {
+        val name = br.readLine()
+        if (name in unheard) {
+            unheardUnseen.add(name)
+        }
+    }
 
+    unheardUnseen.sort()
 
-    bw.write("${groupedNames.size}\n${groupedNames.joinToString("\n")}")
+    bw.write("${unheardUnseen.size}\n${unheardUnseen.joinToString("\n")}")
 
     bw.flush()
     bw.close()
