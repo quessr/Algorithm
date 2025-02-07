@@ -2,24 +2,32 @@ fun main() {
     val br = System.`in`.bufferedReader()
     val bw = System.out.bufferedWriter()
 
-    val n = br.readLine().toInt()
-    val numbers = List(n) { br.readLine().toInt() }
-    val maxNumber = numbers.maxOrNull() ?: 0  // 입력된 숫자 중 가장 큰 값
+    repeat(br.readLine().toInt()) {
+        val n = br.readLine().toInt()
 
-    // 필요할 때만 DP 배열을 초기화
-    val zeroDp = IntArray(maxNumber + 1) { 0 }
-    val oneDp = IntArray(maxNumber + 1) { 0 }
+        if (n == 0) {
+            bw.write("1 0\n")
+        } else if (n == 1) {
+            bw.write("0 1\n")
+        } else {
+            var zeroPrev = 1  // f(0)에서 0 출력 횟수
+            var onePrev = 0   // f(0)에서 1 출력 횟수
+            var zeroCurr = 0  // f(1)에서 0 출력 횟수
+            var oneCurr = 1   // f(1)에서 1 출력 횟수
 
-    zeroDp[0] = 1
-    if (maxNumber > 0) oneDp[1] = 1  // maxNumber가 0이면 out of bounds 방지
+            for (i in 2..n) {
+                val newZero = zeroCurr + zeroPrev
+                val newOne = oneCurr + onePrev
 
-    for (i in 2..maxNumber) {
-        zeroDp[i] = zeroDp[i - 1] + zeroDp[i - 2]
-        oneDp[i] = oneDp[i - 1] + oneDp[i - 2]
+                zeroPrev = zeroCurr
+                onePrev = oneCurr
+                zeroCurr = newZero
+                oneCurr = newOne
+            }
+            bw.write("$zeroCurr $oneCurr\n")
+        }
     }
 
-    val results = numbers.map { "${zeroDp[it]} ${oneDp[it]}" }
-    bw.write(results.joinToString("\n"))
     bw.flush()
     bw.close()
 }
