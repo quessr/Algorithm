@@ -1,31 +1,25 @@
-private val memo = Array(41) { Pair(0, 0) }
 fun main() {
     val br = System.`in`.bufferedReader()
     val bw = System.out.bufferedWriter()
 
     val n = br.readLine().toInt()
-    val nList = List(n) { br.readLine().toInt() }
+    val numbers = List(n) { br.readLine().toInt() }
+    val maxNumber = numbers.maxOrNull() ?: 0  // 입력된 숫자 중 가장 큰 값
 
-    val result = nList.map { fibonacci(it) }
+    // 필요할 때만 DP 배열을 초기화
+    val zeroDp = IntArray(maxNumber + 1) { 0 }
+    val oneDp = IntArray(maxNumber + 1) { 0 }
 
-    bw.write(result.joinToString("\n") { "${it.first} ${it.second}" })
+    zeroDp[0] = 1
+    if (maxNumber > 0) oneDp[1] = 1  // maxNumber가 0이면 out of bounds 방지
 
-    bw.flush()
-    bw.close()
-}
-
-private fun fibonacci(n: Int): Pair<Int, Int> {
-    if (memo[n] != Pair(0, 0)) return memo[n]
-
-    memo[n] = when (n) {
-        0 -> Pair(1, 0)
-        1 -> Pair(0, 1)
-        else -> {
-            val (zero1, one1) = fibonacci(n - 1)
-            val (zero2, one2) = fibonacci(n - 2)
-            Pair(zero1 + zero2, one1 + one2)
-        }
+    for (i in 2..maxNumber) {
+        zeroDp[i] = zeroDp[i - 1] + zeroDp[i - 2]
+        oneDp[i] = oneDp[i - 1] + oneDp[i - 2]
     }
 
-    return memo[n]
+    val results = numbers.map { "${zeroDp[it]} ${oneDp[it]}" }
+    bw.write(results.joinToString("\n"))
+    bw.flush()
+    bw.close()
 }
