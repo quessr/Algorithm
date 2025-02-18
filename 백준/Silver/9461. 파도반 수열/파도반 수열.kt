@@ -5,17 +5,14 @@ fun main() {
     val n = br.readLine().toInt()
     val numbers = IntArray(n) { br.readLine().toInt() }
 
-    val maxNumber = numbers.maxOrNull() ?: 0
-    val dp = LongArray(maxNumber + 1)
+    val dp = LongArray(101)
 
-    if (maxNumber >= 1) dp[1] = 1
-    if (maxNumber >= 2) dp[2] = 1
-    if (maxNumber >= 3) dp[3] = 1
-    if (maxNumber >= 4) dp[4] = 2
-    if (maxNumber >= 5) dp[5] = 2
+    dp[1] = 1
+    dp[2] = 1
+    dp[3] = 1
 
-    for (i in 6..maxNumber) {
-        dp[i] = dp[i - 1] + dp[i - 5]
+    for (i in 4..100) {
+        dp[i] = dp[i - 2] + dp[i - 3]
     }
 
     for (number in numbers) {
