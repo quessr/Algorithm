@@ -3,15 +3,15 @@ fun main() {
     val bw = System.out.bufferedWriter()
 
     val (_, m) = br.readLine().split(" ").map { it.toInt() }
-    val treeHeights = br.readLine().split(" ").map { it.toInt() }.sorted()
+    val treeHeights = br.readLine().split(" ").map { it.toInt() }
 
-    bw.write("${binarySearch(treeHeights, 0L, treeHeights.maxOrNull()?.toLong() ?: 0L, m.toLong())}\n")
+    bw.write("${binarySearch(treeHeights, 0, treeHeights.max(), m)}\n")
 
     bw.flush()
     bw.close()
 }
 
-private fun binarySearch(array: List<Int>, left: Long, right: Long, target: Long): Long {
+private fun binarySearch(array: List<Int>, left: Int, right: Int, target: Int): Int {
     var low = left
     var high = right
 
@@ -22,6 +22,7 @@ private fun binarySearch(array: List<Int>, left: Long, right: Long, target: Long
         for (height in array) {
             if (height > mid) {
                 maxHeightsSum += height - mid
+                if (maxHeightsSum >= target) break
             }
         }
 
