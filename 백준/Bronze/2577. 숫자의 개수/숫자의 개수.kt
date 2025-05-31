@@ -6,15 +6,11 @@ fun main() {
         br.readLine()
     }
 
-    var multipleAbc = 1
+    var multipleAbc = abcList.fold(1) {acc, s ->  acc * s.toInt()}
 
-    for (i in abcList.listIterator()) {
-        multipleAbc *= i.toInt()
-    }
+    val arrayMultipleAbc = multipleAbc.toString().map { it.digitToInt() }
 
     for (i in 0..9) {
-        val arrayMultipleAbc = multipleAbc.toString().map { it.digitToInt() }
-
         var cnt = arrayMultipleAbc.count { it == i }
         bw.write("$cnt\n")
     }
